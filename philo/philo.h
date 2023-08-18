@@ -6,15 +6,18 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:14 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/18 21:57:06 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/18 22:16:01 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pthread.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/time.h>
+#ifndef PHILO_H
+# define PHILO_H
+
+# include <pthread.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <sys/time.h>
 
 typedef struct s_philosopher
 {
@@ -35,3 +38,5 @@ typedef struct s_visor
 	unsigned int	die_time;
 	unsigned int	must_eat;
 }	t_visor;
+
+#endif
