@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:14 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/18 22:16:01 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/20 21:17:17 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,46 @@
 # include <stdlib.h>
 # include <sys/time.h>
 
+typedef struct s_arg
+{
+	int				number;
+	unsigned int	eating_time;
+	unsigned int	sleeping_time;
+	unsigned int	dying_time;
+	unsigned int	must_eat;
+}	t_arg;
+
+typedef struct s_shared
+{
+	pthread_mutex_t	*fork;
+	pthread_mutex_t	std_out;
+	struct timeval	init_time;
+	int				end_flag;
+}	t_shared;
+
 typedef struct s_philosopher
 {
 	int				self;
 	int				left;
 	int				right;
-	unsigned int	last_eat;
+	struct timeval	last_eat;
 	unsigned int	eat_cnt;
+	t_arg			arg;
+	t_shared		*shared;
 }	t_philosopher;
 
-typedef struct s_visor
-{
-	t_philosopher	*philos;
-	pthread_mutex_t	*fork;
-	pthread_mutex_t	std_out;
-	unsigned int	eat_time;
-	unsigned int	sleep_time;
-	unsigned int	die_time;
-	unsigned int	must_eat;
-}	t_visor;
+// init
+void	philo_init_arg(t_arg *arg, char *argv[], int argc);
+void	philo_init_shared(t_shared *shared, int number);
+void	philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared);
+
+//print
+void	philo_print_take_fork(t_philosopher *philo);
+void	philo_print_eating(t_philosopher *philo);
+void	philo_print_sleeping(t_philosopher *philo);
+void	philo_print_thinking(t_philosopher *philo);
+void	philo_print_dying(t_philosopher *philo);
+
+int		ft_atoi(const char *str);
 
 #endif
