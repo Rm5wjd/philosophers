@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:16:30 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/20 21:43:02 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/22 15:05:02 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,5 @@ void	philo_action_sleep(t_philosopher *philo)
 
 void	philo_action_thinking(t_philosopher *philo)
 {
-	philo_action_thinking(philo);
+	philo_print_thinking(philo);
 }

@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:55:46 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/20 21:16:54 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/22 17:07:27 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,21 @@ void	philo_init_arg(t_arg *arg, char *argv[], int argc)
 		arg->must_eat = ft_atoi(argv[5]);
 }
 
-void	philo_init_shared(t_shared *shared, int number)
+void	philo_init_shared(t_shared **shared, int number)
 {
 	int	i;
 
 	i = 1;
-	shared = (t_shared *)malloc(sizeof(t_shared));
-	shared->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * (number + 1));
+	(*shared) = (t_shared *)malloc(sizeof(t_shared));
+	(*shared)->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * (number + 1));
 	while (i <= number)
 	{
-		pthread_mutex_init(&(shared->fork[i]), NULL);
+		pthread_mutex_init(&((*shared)->fork[i]), NULL);
 		i++;
 	}
-	pthread_mutex_init(&(shared->std_out), NULL);
-	gettimeofday(&(shared->init_time), NULL);
-	shared->end_flag = 0;
+	pthread_mutex_init(&((*shared)->std_out), NULL);
+	gettimeofday(&((*shared)->init_time), NULL);
+	(*shared)->end_flag = 0;
 }
 
 void	philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared)
@@ -48,8 +48,8 @@ void	philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared)
 	{
 		philo[i].self = i;
 		philo[i].left = i;
-		philo[i].right = (philo->arg.number + i) % philo->arg.number;
-		philo[i].last_eat = philo->shared->init_time;
+		philo[i].right = (i + 1) % arg.number;
+		gettimeofday(&(philo[i].last_eat), NULL);
 		philo[i].arg = arg;
 		philo[i].shared = shared;
 		i++;

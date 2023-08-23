@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:14 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/20 21:17:17 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/22 17:33:49 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,28 @@ typedef struct s_philosopher
 	t_shared		*shared;
 }	t_philosopher;
 
+//main
+void				*philo_start(void *data);
+void				monitor_func(t_philosopher *philo, t_arg arg);
+unsigned long long	get_time(void);
+
 // init
-void	philo_init_arg(t_arg *arg, char *argv[], int argc);
-void	philo_init_shared(t_shared *shared, int number);
-void	philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared);
+void				philo_init_arg(t_arg *arg, char *argv[], int argc);
+void				philo_init_shared(t_shared **shared, int number);
+void				philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared);
 
 //print
-void	philo_print_take_fork(t_philosopher *philo);
-void	philo_print_eating(t_philosopher *philo);
-void	philo_print_sleeping(t_philosopher *philo);
-void	philo_print_thinking(t_philosopher *philo);
-void	philo_print_dying(t_philosopher *philo);
+void				philo_print_take_fork(t_philosopher *philo);
+void				philo_print_eating(t_philosopher *philo);
+void				philo_print_sleeping(t_philosopher *philo);
+void				philo_print_thinking(t_philosopher *philo);
+void				philo_print_dying(t_philosopher *philo);
 
-int		ft_atoi(const char *str);
+//action
+void				philo_action_eat(t_philosopher *philo);
+void				philo_action_sleep(t_philosopher *philo);
+void				philo_action_thinking(t_philosopher *philo);
+
+int					ft_atoi(const char *str);
 
 #endif
