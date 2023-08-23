@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:14 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/22 17:33:49 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/23 16:38:59 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,21 @@ typedef struct s_arg
 
 typedef struct s_shared
 {
-	pthread_mutex_t	*fork;
-	pthread_mutex_t	std_out;
-	struct timeval	init_time;
-	int				end_flag;
+	pthread_mutex_t		*fork;
+	pthread_mutex_t		std_out;
+	unsigned long long	init_time;
+	int					end_flag;
 }	t_shared;
 
 typedef struct s_philosopher
 {
-	int				self;
-	int				left;
-	int				right;
-	struct timeval	last_eat;
-	unsigned int	eat_cnt;
-	t_arg			arg;
-	t_shared		*shared;
+	int					self;
+	int					left;
+	int					right;
+	unsigned long long	last_eat;
+	unsigned int		eat_cnt;
+	t_arg				arg;
+	t_shared			*shared;
 }	t_philosopher;
 
 //main

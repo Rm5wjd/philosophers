@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:55:46 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/22 17:07:27 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/23 16:39:43 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	philo_init_shared(t_shared **shared, int number)
 		i++;
 	}
 	pthread_mutex_init(&((*shared)->std_out), NULL);
-	gettimeofday(&((*shared)->init_time), NULL);
+	//gettimeofday(&((*shared)->init_time), NULL);
+	(*shared)->init_time = get_time();
 	(*shared)->end_flag = 0;
 }
 
@@ -49,7 +50,8 @@ void	philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared)
 		philo[i].self = i;
 		philo[i].left = i;
 		philo[i].right = (i + 1) % arg.number;
-		gettimeofday(&(philo[i].last_eat), NULL);
+		//gettimeofday(&(philo[i].last_eat), NULL);
+		philo[i].last_eat = get_time();
 		philo[i].arg = arg;
 		philo[i].shared = shared;
 		i++;

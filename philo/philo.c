@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:14:47 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/22 17:33:16 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/23 16:50:52 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,15 @@ void	*philo_start(void *data)
 void	monitor_func(t_philosopher *philo, t_arg arg)
 {
 	int					i;
-	struct timeval		die_check;
-	unsigned long long	ull_last_eat;
-	unsigned long long	ull_die_chedk;
+	unsigned long long	now;
 
 	i = 1;
 	while (1)
 	{
 		if (i > arg.number)
 			i = 1;
-		gettimeofday(&die_check, NULL);
-		ull_last_eat = ((philo[i].last_eat.tv_usec - philo[i].shared->init_time.tv_usec) * 1000) + arg.dying_time;
-		ull_die_chedk = (die_check.tv_usec - philo[i].shared->init_time.tv_usec) * 1000;
-		if (ull_last_eat <= ull_die_chedk)
+		now = get_time();
+		if (now - philo[i].last_eat >= arg.dying_time)
 		{
 			philo_print_dying(&(philo[i]));
 			philo[i].shared->end_flag = 1;
