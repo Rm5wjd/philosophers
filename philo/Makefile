@@ -6,14 +6,14 @@
 #    By: junglee <junglee@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/22 15:40:44 by junglee           #+#    #+#              #
-#    Updated: 2023/08/22 15:53:05 by junglee          ###   ########.fr        #
+#    Updated: 2023/08/27 20:41:09 by junglee          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-DEBUG_FLAGS = -g
+#DEBUG_FLAGS = -g -fsanitize=thread
 SRCS_DIR = srcs
 
 SRCS = ft_atoi.c philo_action.c philo_init.c philo_print.c philo.c
@@ -21,7 +21,7 @@ SRCS = ft_atoi.c philo_action.c philo_init.c philo_print.c philo.c
 OBJS = $(SRCS:.c=.o)
 
 $(NAME) :: $(OBJS)
-	$(CC) $(CFLAGS) -I. -o $(NAME) $^ $(DEBUG_FLAGS) -lreadline
+	$(CC) $(CFLAGS) -I. -o $(NAME) $^ $(DEBUG_FLAGS)
 
 all : $(NAME)
 
