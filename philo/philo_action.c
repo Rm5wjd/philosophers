@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:16:30 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/25 22:17:35 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/29 20:08:00 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,19 @@ void	philo_action_eat(t_philosopher *philo)
 	philo_print_take_fork(philo);
 	pthread_mutex_lock(&(philo->shared->fork[second]));
 	philo_print_take_fork(philo);
+	pthread_mutex_lock(&(philo->last_eat_check));
 	philo->last_eat = get_time();
+	pthread_mutex_unlock(&(philo->last_eat_check));
 	philo_print_eating(philo);
 	ft_usleep(philo->arg.eating_time * 1000);
 	pthread_mutex_unlock(&(philo->shared->fork[second]));
 	pthread_mutex_unlock(&(philo->shared->fork[first]));
 	(philo->eat_cnt)++;
-	if ((philo->eat_cnt == philo->arg.must_eat) && (philo->eat_flag == 0))
+	if (philo->eat_cnt == philo->arg.must_eat)
 	{
+		pthread_mutex_lock(&(philo->shared->eat_cnt_check));
 		(philo->shared->done_philo)++;
-		philo->eat_flag = 1;
+		pthread_mutex_unlock(&(philo->shared->eat_cnt_check));
 	}
 }
 
@@ -49,20 +52,6 @@ void	philo_action_thinking(t_philosopher *philo)
 	philo_print_thinking(philo);
 	usleep(10);
 }
-
-//void	ft_usleep(useconds_t time) //1000
-//{
-//	unsigned long long	slice_time;
-
-//	slice_time = 0;
-//	while (1)
-//	{
-//		slice_time += 100; // 100
-//		usleep(100);
-//		if (slice_time >= time)
-//			return ;
-//	}
-//}
 
 void	ft_usleep(useconds_t time)
 {

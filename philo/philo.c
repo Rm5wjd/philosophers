@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:14:47 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/27 20:08:53 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/29 20:15:55 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,13 @@ void	*philo_start(void *data)
 		philo_action_eat(philo);
 		philo_action_sleep(philo);
 		philo_action_thinking(philo);
+		pthread_mutex_lock(&(philo->shared->end_check));
 		if (philo->shared->end_flag)
+		{
+			pthread_mutex_unlock(&(philo->shared->end_check));
 			return (0);
+		}
+		pthread_mutex_unlock(&(philo->shared->end_check));
 	}
 }
 
@@ -68,19 +73,27 @@ void	monitor_func(t_philosopher *philo, t_arg arg)
 		if (i >= arg.number)
 			i = 0;
 		now = get_time();
+		pthread_mutex_lock(&(philo[i].last_eat_check));
 		if (now - philo[i].last_eat >= arg.dying_time)
 		{
+			pthread_mutex_lock(&(philo->shared->end_check));
+			philo[i].shared->end_flag = 1;
+			pthread_mutex_unlock(&(philo->shared->end_check));
 			philo_print_dying(&(philo[i]));
+			pthread_mutex_unlock(&(philo[i].last_eat_check));
 			return ;
 		}
-		if (philo->eat_cnt == arg.must_eat)
+		pthread_mutex_unlock(&(philo[i].last_eat_check));
+		pthread_mutex_lock(&(philo->shared->eat_cnt_check));
+		if (philo->shared->done_philo == arg.number)
 		{
-			if (philo->shared->done_philo == arg.number)
-			{
-				philo[i].shared->end_flag = 1;
-				return ;
-			}
+			pthread_mutex_unlock(&(philo->shared->eat_cnt_check));
+			pthread_mutex_lock(&(philo->shared->end_check));
+			philo[i].shared->end_flag = 1;
+			pthread_mutex_unlock(&(philo->shared->end_check));
+			return ;
 		}
+		pthread_mutex_unlock(&(philo->shared->eat_cnt_check));
 		i++;
 	}
 }
@@ -102,7 +115,7 @@ void	free_thread(pthread_t *p, t_arg arg, t_shared *shared)
 	free(shared);
 }
 
-inline unsigned long long	get_time(void)
+unsigned long long	get_time(void)
 {
 	unsigned long long	sec;
 	struct timeval		time;

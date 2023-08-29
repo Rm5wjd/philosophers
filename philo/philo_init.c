@@ -6,11 +6,11 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:55:46 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/27 17:28:40 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/29 20:00:19 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <philo.h>
+#include "philo.h"
 
 void	philo_init_arg(t_arg *arg, char *argv[], int argc)
 {
@@ -38,6 +38,7 @@ void	philo_init_shared(t_shared **shared, int number)
 	}
 	pthread_mutex_init(&((*shared)->std_out), NULL);
 	pthread_mutex_init(&((*shared)->end_check), NULL);
+	pthread_mutex_init(&((*shared)->eat_cnt_check), NULL);
 	(*shared)->init_time = get_time();
 	(*shared)->end_flag = 0;
 	(*shared)->done_philo = 0;
@@ -56,10 +57,10 @@ void	philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared)
 			philo[i].right = 1;
 		else
 			philo[i].right = (i + 1) % arg.number;
-		philo[i].eat_flag = 0;
-		philo[i].last_eat = get_time();
+		philo[i].last_eat = shared->init_time;
 		philo[i].arg = arg;
 		philo[i].shared = shared;
+		pthread_mutex_init(&(philo[i].last_eat_check), NULL);
 		i++;
 	}
 }

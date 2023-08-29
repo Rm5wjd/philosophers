@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:14 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/27 20:02:45 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/29 20:00:13 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_shared
 	pthread_mutex_t		*fork;
 	pthread_mutex_t		std_out;
 	pthread_mutex_t		end_check;
+	pthread_mutex_t		eat_cnt_check;
 	unsigned long long	init_time;
 	int					end_flag;
 	int					done_philo;
@@ -43,11 +44,11 @@ typedef struct s_philosopher
 	int					self;
 	int					left;
 	int					right;
-	int					eat_flag;
 	unsigned long long	last_eat;
 	unsigned int		eat_cnt;
 	t_arg				arg;
 	t_shared			*shared;
+	pthread_mutex_t		last_eat_check;
 }	t_philosopher;
 
 //main
