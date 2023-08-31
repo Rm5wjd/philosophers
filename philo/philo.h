@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:14 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/29 20:00:13 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/31 20:23:33 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,15 @@ typedef struct s_philosopher
 //main
 void				*philo_start(void *data);
 void				monitor_func(t_philosopher *philo, t_arg arg);
-void				free_thread(pthread_t *p, t_arg arg, t_shared *shared);
+void				free_thread(pthread_t *p, t_arg arg, \
+t_shared *shared, t_philosopher *philo);
 unsigned long long	get_time(void);
 
 // init
 void				philo_init_arg(t_arg *arg, char *argv[], int argc);
 void				philo_init_shared(t_shared **shared, int number);
-void				philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared);
+void				philo_init_sopher(t_philosopher *philo, \
+t_arg arg, t_shared *shared);
 
 //print
 void				philo_print_take_fork(t_philosopher *philo);
@@ -74,6 +76,9 @@ void				philo_action_eat(t_philosopher *philo);
 void				philo_action_sleep(t_philosopher *philo);
 void				philo_action_thinking(t_philosopher *philo);
 void				ft_usleep(useconds_t time);
+
+//safety
+void				*malloc_s(size_t size);
 
 int					ft_atoi(const char *str);
 

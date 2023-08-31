@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:14:47 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/29 20:15:55 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/31 20:55:21 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	main(int argc, char *argv[])
 		return (1);
 	i = 0;
 	philo_init_arg(&arg, argv, argc);
-	philo = (t_philosopher *)malloc(sizeof(t_philosopher) * (arg.number));
-	p = (pthread_t *)malloc(sizeof(pthread_t) * (arg.number));
+	philo = (t_philosopher *)malloc_s(sizeof(t_philosopher) * (arg.number));
+	p = (pthread_t *)malloc_s(sizeof(pthread_t) * (arg.number));
 	philo_init_shared(&shared, arg.number);
 	philo_init_sopher(philo, arg, shared);
 	while (i < arg.number)
@@ -35,7 +35,7 @@ int	main(int argc, char *argv[])
 		i++;
 	}
 	monitor_func(philo, arg);
-	free_thread(p, arg, shared);
+	free_thread(p, arg, shared, philo);
 	free(p);
 	free(philo);
 }
@@ -50,6 +50,8 @@ void	*philo_start(void *data)
 	while (1)
 	{
 		philo_action_eat(philo);
+		if (philo->arg.number == 1)
+			return (0);
 		philo_action_sleep(philo);
 		philo_action_thinking(philo);
 		pthread_mutex_lock(&(philo->shared->end_check));
@@ -62,43 +64,8 @@ void	*philo_start(void *data)
 	}
 }
 
-void	monitor_func(t_philosopher *philo, t_arg arg)
-{
-	int					i;
-	unsigned long long	now;
-
-	i = 0;
-	while (1)
-	{
-		if (i >= arg.number)
-			i = 0;
-		now = get_time();
-		pthread_mutex_lock(&(philo[i].last_eat_check));
-		if (now - philo[i].last_eat >= arg.dying_time)
-		{
-			pthread_mutex_lock(&(philo->shared->end_check));
-			philo[i].shared->end_flag = 1;
-			pthread_mutex_unlock(&(philo->shared->end_check));
-			philo_print_dying(&(philo[i]));
-			pthread_mutex_unlock(&(philo[i].last_eat_check));
-			return ;
-		}
-		pthread_mutex_unlock(&(philo[i].last_eat_check));
-		pthread_mutex_lock(&(philo->shared->eat_cnt_check));
-		if (philo->shared->done_philo == arg.number)
-		{
-			pthread_mutex_unlock(&(philo->shared->eat_cnt_check));
-			pthread_mutex_lock(&(philo->shared->end_check));
-			philo[i].shared->end_flag = 1;
-			pthread_mutex_unlock(&(philo->shared->end_check));
-			return ;
-		}
-		pthread_mutex_unlock(&(philo->shared->eat_cnt_check));
-		i++;
-	}
-}
-
-void	free_thread(pthread_t *p, t_arg arg, t_shared *shared)
+void	free_thread(pthread_t *p, t_arg arg, \
+t_shared *shared, t_philosopher *philo)
 {
 	int	i;
 	int	status;
@@ -108,10 +75,12 @@ void	free_thread(pthread_t *p, t_arg arg, t_shared *shared)
 	{
 		pthread_join(p[i], (void **)&status);
 		pthread_mutex_destroy(&(shared->fork[i]));
+		pthread_mutex_destroy(&(philo[i].last_eat_check));
 		i++;
 	}
 	pthread_mutex_destroy(&(shared->end_check));
 	pthread_mutex_destroy(&(shared->std_out));
+	pthread_mutex_destroy(&(shared->eat_cnt_check));
 	free(shared);
 }
 

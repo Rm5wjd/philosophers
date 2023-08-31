@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:16:30 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/29 20:08:00 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/31 20:54:59 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	philo_action_eat(t_philosopher *philo)
 	set_fork_order(&first, &second, philo);
 	pthread_mutex_lock(&(philo->shared->fork[first]));
 	philo_print_take_fork(philo);
+	if (philo->arg.number == 1)
+		return ;
 	pthread_mutex_lock(&(philo->shared->fork[second]));
 	philo_print_take_fork(philo);
 	pthread_mutex_lock(&(philo->last_eat_check));

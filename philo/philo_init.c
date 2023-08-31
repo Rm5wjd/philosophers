@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:55:46 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/29 20:00:19 by junglee          ###   ########.fr       */
+/*   Updated: 2023/08/31 20:53:03 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ void	philo_init_shared(t_shared **shared, int number)
 	int	i;
 
 	i = 0;
-	(*shared) = (t_shared *)malloc(sizeof(t_shared));
-	(*shared)->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * (number));
+	(*shared) = (t_shared *)malloc_s(sizeof(t_shared));
+	(*shared)->fork = (pthread_mutex_t *) \
+	malloc_s(sizeof(pthread_mutex_t) * (number));
 	while (i < number)
 	{
 		pthread_mutex_init(&((*shared)->fork[i]), NULL);
@@ -54,7 +55,7 @@ void	philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared)
 		philo[i].self = i;
 		philo[i].left = i;
 		if (arg.number == 1)
-			philo[i].right = 1;
+			philo[i].right = 0;
 		else
 			philo[i].right = (i + 1) % arg.number;
 		philo[i].last_eat = shared->init_time;
