@@ -6,12 +6,11 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:14:47 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/31 20:55:21 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/03 15:57:03 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <string.h>
 
 int	main(int argc, char *argv[])
 {
@@ -24,7 +23,8 @@ int	main(int argc, char *argv[])
 	if (argc != 5 && argc != 6)
 		return (1);
 	i = 0;
-	philo_init_arg(&arg, argv, argc);
+	if (philo_init_arg(&arg, argv, argc) == 0)
+		return (1);
 	philo = (t_philosopher *)malloc_s(sizeof(t_philosopher) * (arg.number));
 	p = (pthread_t *)malloc_s(sizeof(pthread_t) * (arg.number));
 	philo_init_shared(&shared, arg.number);

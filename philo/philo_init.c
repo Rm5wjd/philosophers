@@ -6,14 +6,25 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:55:46 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/31 20:53:03 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/03 15:18:02 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philo_init_arg(t_arg *arg, char *argv[], int argc)
+static int	num_check(const char *str);
+
+int	philo_init_arg(t_arg *arg, char *argv[], int argc)
 {
+	int	i;
+
+	i = 1;
+	while (i < argc)
+	{
+		if (!num_check(argv[i]))
+			return (0);
+		i++;
+	}
 	arg->number = ft_atoi(argv[1]);
 	arg->dying_time = ft_atoi(argv[2]);
 	arg->eating_time = ft_atoi(argv[3]);
@@ -22,6 +33,7 @@ void	philo_init_arg(t_arg *arg, char *argv[], int argc)
 		arg->must_eat = ft_atoi(argv[5]);
 	else
 		arg->must_eat = 0;
+	return (1);
 }
 
 void	philo_init_shared(t_shared **shared, int number)
@@ -64,4 +76,20 @@ void	philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared)
 		pthread_mutex_init(&(philo[i].last_eat_check), NULL);
 		i++;
 	}
+}
+
+static int	num_check(const char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (0);
+		i++;
+	}
+	return (1);
 }

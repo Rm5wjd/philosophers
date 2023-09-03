@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:16:30 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/31 20:54:59 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/03 16:48:29 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,18 @@ void	philo_action_eat(t_philosopher *philo)
 
 	set_fork_order(&first, &second, philo);
 	pthread_mutex_lock(&(philo->shared->fork[first]));
-	philo_print_take_fork(philo);
+	philo_print(philo, "has taken a fork");
 	if (philo->arg.number == 1)
 		return ;
 	pthread_mutex_lock(&(philo->shared->fork[second]));
-	philo_print_take_fork(philo);
+	philo_print(philo, "has taken a fork");
 	pthread_mutex_lock(&(philo->last_eat_check));
 	philo->last_eat = get_time();
+	pthread_mutex_lock(&(philo->shared->std_out));
+	printf("%d %lld\n", philo->self + 1, philo->last_eat);
+	pthread_mutex_unlock(&(philo->shared->std_out));
 	pthread_mutex_unlock(&(philo->last_eat_check));
-	philo_print_eating(philo);
+	philo_print(philo, "is eating");
 	ft_usleep(philo->arg.eating_time * 1000);
 	pthread_mutex_unlock(&(philo->shared->fork[second]));
 	pthread_mutex_unlock(&(philo->shared->fork[first]));
@@ -45,13 +48,13 @@ void	philo_action_eat(t_philosopher *philo)
 
 void	philo_action_sleep(t_philosopher *philo)
 {
-	philo_print_sleeping(philo);
+	philo_print(philo, "is sleeping");
 	ft_usleep(philo->arg.sleeping_time * 1000);
 }
 
 void	philo_action_thinking(t_philosopher *philo)
 {
-	philo_print_thinking(philo);
+	philo_print(philo, "is thinking");
 	usleep(10);
 }
 

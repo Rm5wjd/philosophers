@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 20:35:31 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/31 20:41:49 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/03 16:58:03 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,12 @@ void	monitor_func(t_philosopher *philo, t_arg arg)
 			i = 0;
 		now = get_time();
 		pthread_mutex_lock(&(philo[i].last_eat_check));
-		if (now - philo[i].last_eat >= arg.dying_time)
+		if (now >= (unsigned long long)arg.dying_time + philo[i].last_eat)
+		{
+			printf("%lld %lld %lld\n", now, philo[i].last_eat, philo[i].shared->init_time);
+			printf("%lld %lld %lld\n", now, philo[i+1].last_eat, philo[i].shared->init_time);
 			return (dying_for_time(philo, i));
+		}
 		pthread_mutex_unlock(&(philo[i].last_eat_check));
 		pthread_mutex_lock(&(philo->shared->eat_cnt_check));
 		if (philo->shared->done_philo == arg.number)
