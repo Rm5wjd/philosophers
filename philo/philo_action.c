@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:16:30 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/03 16:48:29 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/09 16:17:47 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ void	philo_action_eat(t_philosopher *philo)
 	philo_print(philo, "has taken a fork");
 	pthread_mutex_lock(&(philo->last_eat_check));
 	philo->last_eat = get_time();
-	pthread_mutex_lock(&(philo->shared->std_out));
-	printf("%d %lld\n", philo->self + 1, philo->last_eat);
-	pthread_mutex_unlock(&(philo->shared->std_out));
+	// test **
+	// pthread_mutex_lock(&(philo->shared->std_out));
+	// printf("%d %lld\n", philo->self + 1, philo->last_eat);
+	// pthread_mutex_unlock(&(philo->shared->std_out));
+	// **
 	pthread_mutex_unlock(&(philo->last_eat_check));
 	philo_print(philo, "is eating");
 	ft_usleep(philo->arg.eating_time * 1000);
@@ -55,7 +57,7 @@ void	philo_action_sleep(t_philosopher *philo)
 void	philo_action_thinking(t_philosopher *philo)
 {
 	philo_print(philo, "is thinking");
-	usleep(10);
+	usleep(100);
 }
 
 void	ft_usleep(useconds_t time)
