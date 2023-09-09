@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:14 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/03 15:34:10 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/09 16:38:45 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,10 @@ int					philo_init_arg(t_arg *arg, char *argv[], int argc);
 void				philo_init_shared(t_shared **shared, int number);
 void				philo_init_sopher(t_philosopher *philo, \
 t_arg arg, t_shared *shared);
+size_t				ft_strlen(const char *s);
 
 //print
 void				philo_print(t_philosopher *philo, const char *str);
-void				philo_print_take_fork(t_philosopher *philo);
-void				philo_print_eating(t_philosopher *philo);
-void				philo_print_sleeping(t_philosopher *philo);
-void				philo_print_thinking(t_philosopher *philo);
 void				philo_print_dying(t_philosopher *philo);
 
 //action
@@ -81,6 +78,10 @@ void				ft_usleep(useconds_t time);
 //safety
 void				*malloc_s(size_t size);
 
+//atoi
 int					ft_atoi(const char *str);
+
+//arg_parse
+int					arg_range_check(t_arg *arg);
 
 #endif

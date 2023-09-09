@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   safety_func.c                                      :+:      :+:    :+:   */
+/*   arg_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/31 20:11:24 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/09 16:39:47 by junglee          ###   ########.fr       */
+/*   Created: 2023/09/09 16:33:52 by junglee           #+#    #+#             */
+/*   Updated: 2023/09/09 19:22:09 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdlib.h>
-#include <unistd.h>
 
-void	*malloc_s(size_t size)
+int	arg_range_check(t_arg *arg)
 {
-	void	*re;
-
-	re = malloc(size);
-	if (!re)
+	if (arg->dying_time > 86400000 || arg->eating_time > 86400000 \
+	|| arg->sleeping_time > 86400000)
 	{
-		write(2, "malloc crash!\n", ft_strlen("malloc crash!\n"));
-		exit(1);
+		printf("philosophers action time over!\n");
+		return (0);
 	}
-	return (re);
+	if (arg->number == 0)
+	{
+		printf("philosophers number zero!\n");
+		return (0);
+	}
+	return (1);
 }

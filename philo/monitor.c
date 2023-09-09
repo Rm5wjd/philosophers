@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 20:35:31 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/06 15:59:23 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/09 16:27:17 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	monitor_func(t_philosopher *philo, t_arg arg)
 		pthread_mutex_lock(&(philo->shared->eat_cnt_check));
 		if (philo->shared->done_philo == arg.number)
 		{
-			pthread_mutex_unlock(&(philo->shared->eat_cnt_check));		
+			pthread_mutex_unlock(&(philo->shared->eat_cnt_check));
 			return (dying_for_eat(philo, i));
 		}
 		pthread_mutex_unlock(&(philo->shared->eat_cnt_check));

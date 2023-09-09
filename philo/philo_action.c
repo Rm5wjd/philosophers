@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:16:30 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/09 16:17:47 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/09 18:04:50 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,11 @@ void	philo_action_eat(t_philosopher *philo)
 	philo_print(philo, "has taken a fork");
 	pthread_mutex_lock(&(philo->last_eat_check));
 	philo->last_eat = get_time();
-	// test **
-	// pthread_mutex_lock(&(philo->shared->std_out));
-	// printf("%d %lld\n", philo->self + 1, philo->last_eat);
-	// pthread_mutex_unlock(&(philo->shared->std_out));
-	// **
 	pthread_mutex_unlock(&(philo->last_eat_check));
 	philo_print(philo, "is eating");
 	ft_usleep(philo->arg.eating_time * 1000);
-	pthread_mutex_unlock(&(philo->shared->fork[second]));
 	pthread_mutex_unlock(&(philo->shared->fork[first]));
+	pthread_mutex_unlock(&(philo->shared->fork[second]));
 	(philo->eat_cnt)++;
 	if (philo->eat_cnt == philo->arg.must_eat)
 	{
@@ -76,7 +71,7 @@ void	ft_usleep(useconds_t time)
 inline static void	set_fork_order(int *first, int *second, \
 t_philosopher *philo)
 {
-	if (philo->self % 2 == 0)
+	if ((philo->self + 1) % 2 == 0)
 	{
 		*first = philo->right;
 		*second = philo->left;

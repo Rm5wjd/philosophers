@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:55:46 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/03 15:18:02 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/09 17:40:07 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	philo_init_arg(t_arg *arg, char *argv[], int argc)
 		arg->must_eat = ft_atoi(argv[5]);
 	else
 		arg->must_eat = 0;
+	if (!arg_range_check(arg))
+		return (0);
 	return (1);
 }
 
@@ -69,7 +71,7 @@ void	philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared)
 		if (arg.number == 1)
 			philo[i].right = 0;
 		else
-			philo[i].right = (i + 1) % arg.number;
+			philo[i].right = (i + 1) % (arg.number);
 		philo[i].last_eat = shared->init_time;
 		philo[i].arg = arg;
 		philo[i].shared = shared;
@@ -88,8 +90,21 @@ static int	num_check(const char *str)
 	while (str[i])
 	{
 		if (!(str[i] >= '0' && str[i] <= '9'))
+		{
+			printf("philosophers arg not number!");
 			return (0);
+		}
 		i++;
 	}
 	return (1);
+}
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
 }
