@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:14 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/09 16:38:45 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/11 16:38:10 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,6 @@ void				philo_action_eat(t_philosopher *philo);
 void				philo_action_sleep(t_philosopher *philo);
 void				philo_action_thinking(t_philosopher *philo);
 void				ft_usleep(useconds_t time);
-
-//safety
-void				*malloc_s(size_t size);
 
 //atoi
 int					ft_atoi(const char *str);

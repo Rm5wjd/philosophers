@@ -6,7 +6,7 @@
 #    By: junglee <junglee@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/22 15:40:44 by junglee           #+#    #+#              #
-#    Updated: 2023/09/09 16:57:38 by junglee          ###   ########.fr        #
+#    Updated: 2023/09/11 16:37:38 by junglee          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CFLAGS = -Wall -Wextra -Werror
 #DEBUG_FLAGS = -g -fsanitize=thread
 SRCS_DIR = srcs
 
-SRCS = ft_atoi.c philo_action.c philo_init.c philo_print.c philo.c safety_func.c monitor.c arg_parse.c
+SRCS = ft_atoi.c philo_action.c philo_init.c philo_print.c philo.c monitor.c arg_parse.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:14:47 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/09 18:00:56 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/11 16:38:43 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	main(int argc, char *argv[])
 	i = 0;
 	if (philo_init_arg(&arg, argv, argc) == 0)
 		return (1);
-	philo = (t_philosopher *)malloc_s(sizeof(t_philosopher) * (arg.number));
-	p = (pthread_t *)malloc_s(sizeof(pthread_t) * (arg.number));
+	philo = (t_philosopher *)malloc(sizeof(t_philosopher) * (arg.number));
+	p = (pthread_t *)malloc(sizeof(pthread_t) * (arg.number));
 	philo_init_shared(&shared, arg.number);
 	philo_init_sopher(philo, arg, shared);
 	while (i < arg.number)
@@ -38,6 +38,7 @@ int	main(int argc, char *argv[])
 	free_thread(p, arg, shared, philo);
 	free(p);
 	free(philo);
+	system("leaks philo");
 }
 
 void	*philo_start(void *data)
@@ -81,6 +82,7 @@ t_shared *shared, t_philosopher *philo)
 	pthread_mutex_destroy(&(shared->end_check));
 	pthread_mutex_destroy(&(shared->std_out));
 	pthread_mutex_destroy(&(shared->eat_cnt_check));
+	free(shared->fork);
 	free(shared);
 }
 

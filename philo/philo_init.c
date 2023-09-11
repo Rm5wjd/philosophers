@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:55:46 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/09 17:40:07 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/11 16:38:33 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	philo_init_shared(t_shared **shared, int number)
 	int	i;
 
 	i = 0;
-	(*shared) = (t_shared *)malloc_s(sizeof(t_shared));
+	(*shared) = (t_shared *)malloc(sizeof(t_shared));
 	(*shared)->fork = (pthread_mutex_t *) \
-	malloc_s(sizeof(pthread_mutex_t) * (number));
+	malloc(sizeof(pthread_mutex_t) * (number));
 	while (i < number)
 	{
 		pthread_mutex_init(&((*shared)->fork[i]), NULL);
