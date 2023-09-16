@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:14 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/16 14:20:54 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/16 17:45:51 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ typedef struct s_arg
 
 typedef struct s_shared
 {
-	pthread_mutex_t		*fork;
+	pthread_mutex_t		*fork_mutex;
 	pthread_mutex_t		std_out;
 	pthread_mutex_t		end_check;
 	pthread_mutex_t		eat_cnt_check;
 	unsigned long long	init_time;
 	int					end_flag;
 	int					done_philo;
+	int					*fork;
 }	t_shared;
 
 typedef struct s_philosopher
@@ -75,6 +76,9 @@ void				philo_action_sleep(t_philosopher *philo);
 void				philo_action_thinking(t_philosopher *philo);
 void				ft_usleep(useconds_t time);
 
+//pick_fork
+int					pick_fork(t_philosopher *philo, int fork_num);
+void				put_fork(t_philosopher *philo, int first, int second);
 //atoi
 int					ft_atoi(const char *str);
 

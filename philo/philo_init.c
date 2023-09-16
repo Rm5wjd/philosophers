@@ -6,11 +6,12 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:55:46 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/16 15:04:42 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/16 17:35:20 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <string.h>
 
 #define CRASH 0
 #define NOTCRASH 1
@@ -49,25 +50,25 @@ int	philo_init_shared(t_shared **shared, int number)
 
 	i = 0;
 	(*shared) = (t_shared *)malloc(sizeof(t_shared));
-	(*shared)->fork = (pthread_mutex_t *) \
+	(*shared)->fork_mutex = (pthread_mutex_t *) \
 	malloc(sizeof(pthread_mutex_t) * (number));
-	if (!((*shared)->fork) || !(*shared))
+	(*shared)->fork = (int *)malloc(sizeof(int) * number);
+	if (!((*shared)->fork_mutex) || !(*shared) || !((*shared)->fork))
 		return (CRASH);
 	while (i < number)
 	{
-		if (pthread_mutex_init(&((*shared)->fork[i]), NULL) != 0)
+		if (pthread_mutex_init(&((*shared)->fork_mutex[i]), NULL) != 0)
 			return (CRASH);
 		i++;
 	}
-	if (pthread_mutex_init(&((*shared)->std_out), NULL) != 0)
-		return (CRASH);
-	if (pthread_mutex_init(&((*shared)->end_check), NULL) != 0)
-		return (CRASH);
-	if (pthread_mutex_init(&((*shared)->eat_cnt_check), NULL) != 0)
+	if (pthread_mutex_init(&((*shared)->std_out), NULL) != 0 \
+	|| pthread_mutex_init(&((*shared)->end_check), NULL) != 0 \
+	|| pthread_mutex_init(&((*shared)->eat_cnt_check), NULL) != 0)
 		return (CRASH);
 	(*shared)->init_time = get_time();
 	(*shared)->end_flag = 0;
 	(*shared)->done_philo = 0;
+	memset((*shared)->fork, 0, sizeof(int) * number);
 	return (NOTCRASH);
 }
 

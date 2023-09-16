@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:14:47 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/16 15:16:02 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/16 17:13:02 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,14 @@ t_shared *shared, t_philosopher *philo)
 	while (i < arg.number)
 	{
 		pthread_join(p[i], (void **)&status);
-		pthread_mutex_destroy(&(shared->fork[i]));
+		pthread_mutex_destroy(&(shared->fork_mutex[i]));
 		pthread_mutex_destroy(&(philo[i].last_eat_check));
 		i++;
 	}
 	pthread_mutex_destroy(&(shared->end_check));
 	pthread_mutex_destroy(&(shared->std_out));
 	pthread_mutex_destroy(&(shared->eat_cnt_check));
-	free(shared->fork);
+	free(shared->fork_mutex);
 	free(shared);
 	free(p);
 	free(philo);
