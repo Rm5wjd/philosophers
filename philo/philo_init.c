@@ -6,11 +6,14 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:55:46 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/11 16:38:33 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/16 15:04:42 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+#define CRASH 0
+#define NOTCRASH 1
 
 static int	num_check(const char *str);
 
@@ -22,6 +25,8 @@ int	philo_init_arg(t_arg *arg, char *argv[], int argc)
 	while (i < argc)
 	{
 		if (!num_check(argv[i]))
+			return (0);
+		if (ft_atoi(argv[i]) < 0)
 			return (0);
 		i++;
 	}
@@ -38,7 +43,7 @@ int	philo_init_arg(t_arg *arg, char *argv[], int argc)
 	return (1);
 }
 
-void	philo_init_shared(t_shared **shared, int number)
+int	philo_init_shared(t_shared **shared, int number)
 {
 	int	i;
 
@@ -46,20 +51,27 @@ void	philo_init_shared(t_shared **shared, int number)
 	(*shared) = (t_shared *)malloc(sizeof(t_shared));
 	(*shared)->fork = (pthread_mutex_t *) \
 	malloc(sizeof(pthread_mutex_t) * (number));
+	if (!((*shared)->fork) || !(*shared))
+		return (CRASH);
 	while (i < number)
 	{
-		pthread_mutex_init(&((*shared)->fork[i]), NULL);
+		if (pthread_mutex_init(&((*shared)->fork[i]), NULL) != 0)
+			return (CRASH);
 		i++;
 	}
-	pthread_mutex_init(&((*shared)->std_out), NULL);
-	pthread_mutex_init(&((*shared)->end_check), NULL);
-	pthread_mutex_init(&((*shared)->eat_cnt_check), NULL);
+	if (pthread_mutex_init(&((*shared)->std_out), NULL) != 0)
+		return (CRASH);
+	if (pthread_mutex_init(&((*shared)->end_check), NULL) != 0)
+		return (CRASH);
+	if (pthread_mutex_init(&((*shared)->eat_cnt_check), NULL) != 0)
+		return (CRASH);
 	(*shared)->init_time = get_time();
 	(*shared)->end_flag = 0;
 	(*shared)->done_philo = 0;
+	return (NOTCRASH);
 }
 
-void	philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared)
+int	philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared)
 {
 	int	i;
 
@@ -75,9 +87,11 @@ void	philo_init_sopher(t_philosopher *philo, t_arg arg, t_shared *shared)
 		philo[i].last_eat = shared->init_time;
 		philo[i].arg = arg;
 		philo[i].shared = shared;
-		pthread_mutex_init(&(philo[i].last_eat_check), NULL);
+		if (pthread_mutex_init(&(philo[i].last_eat_check), NULL) != 0)
+			return (CRASH);
 		i++;
 	}
+	return (NOTCRASH);
 }
 
 static int	num_check(const char *str)

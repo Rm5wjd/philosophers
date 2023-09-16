@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:14 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/11 16:38:10 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/16 14:20:54 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ unsigned long long	get_time(void);
 
 // init
 int					philo_init_arg(t_arg *arg, char *argv[], int argc);
-void				philo_init_shared(t_shared **shared, int number);
-void				philo_init_sopher(t_philosopher *philo, \
+int					philo_init_shared(t_shared **shared, int number);
+int					philo_init_sopher(t_philosopher *philo, \
 t_arg arg, t_shared *shared);
 size_t				ft_strlen(const char *s);
 

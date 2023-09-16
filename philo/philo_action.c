@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:16:30 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/09 18:04:50 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/16 16:18:25 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ void	philo_action_eat(t_philosopher *philo)
 
 	set_fork_order(&first, &second, philo);
 	pthread_mutex_lock(&(philo->shared->fork[first]));
+	// take fork
 	philo_print(philo, "has taken a fork");
 	if (philo->arg.number == 1)
 		return ;
 	pthread_mutex_lock(&(philo->shared->fork[second]));
+	// take fork
 	philo_print(philo, "has taken a fork");
 	pthread_mutex_lock(&(philo->last_eat_check));
 	philo->last_eat = get_time();
@@ -33,7 +35,9 @@ void	philo_action_eat(t_philosopher *philo)
 	philo_print(philo, "is eating");
 	ft_usleep(philo->arg.eating_time * 1000);
 	pthread_mutex_unlock(&(philo->shared->fork[first]));
+	// put fork
 	pthread_mutex_unlock(&(philo->shared->fork[second]));
+	// put fork
 	(philo->eat_cnt)++;
 	if (philo->eat_cnt == philo->arg.must_eat)
 	{

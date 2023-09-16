@@ -6,11 +6,13 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:19:54 by junglee           #+#    #+#             */
-/*   Updated: 2023/08/20 17:20:09 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/16 14:51:11 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 static int	ft_checksign(const char *str)
 {
@@ -39,7 +41,7 @@ static int	ft_checksign(const char *str)
 	return (0);
 }
 
-int	ft_under_over_check(unsigned long long sum, int sign)
+static int	ft_under_over_check(unsigned long long sum, int sign)
 {
 	if (sum - 1 > LLONG_MAX && sign == -1)
 		return (0);
@@ -52,7 +54,7 @@ int	ft_atoi(const char *str)
 {
 	int					i;
 	int					sign;
-	unsigned long long	sum;
+	long long			sum;
 	int					output;
 
 	i = 0;
@@ -64,8 +66,9 @@ int	ft_atoi(const char *str)
 	{
 		if (str[i] >= '0' && str[i] <= '9')
 		{
-			sum *= 10;
-			sum += (int)str[i] - 48;
+			if ((INT_MAX / 10) < sum || (INT_MAX - (str[i] - 48)) < sum)
+				return (-1);
+			sum = sum * 10 + (str[i] - 48);
 		}
 		else if (i > 0 && (str[i - 1] >= '0' && str[i - 1] <= '9')
 			&& !(str[i] >= '0' && str[i] <= '0'))
