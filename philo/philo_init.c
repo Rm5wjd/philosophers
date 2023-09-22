@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:55:46 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/16 17:35:20 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/22 15:26:51 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	philo_init_arg(t_arg *arg, char *argv[], int argc)
 		arg->must_eat = ft_atoi(argv[5]);
 	else
 		arg->must_eat = 0;
-	if (!arg_range_check(arg))
+	if (!arg_range_check(arg, argc))
 		return (0);
 	return (1);
 }
@@ -112,14 +112,4 @@ static int	num_check(const char *str)
 		i++;
 	}
 	return (1);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	len;
-
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
 }

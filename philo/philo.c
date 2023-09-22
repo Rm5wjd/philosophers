@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:14:47 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/16 17:13:02 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/22 15:30:48 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@ int	main(int argc, char *argv[])
 	t_philosopher	*philo;
 	t_arg			arg;
 	t_shared		*shared;
-	int				i;
 	pthread_t		*p;
 
 	if (argc != 5 && argc != 6)
 		return (EXIT);
-	i = 0;
 	if (philo_init_arg(&arg, argv, argc) == 0)
 		return (EXIT);
 	philo = (t_philosopher *)malloc(sizeof(t_philosopher) * (arg.number));
@@ -34,14 +32,24 @@ int	main(int argc, char *argv[])
 	if (philo_init_shared(&shared, arg.number) == 0 \
 	|| philo_init_sopher(philo, arg, shared) == 0)
 		return (EXIT);
+	if (create_thread(arg, p, philo) == 0)
+		return (EXIT);
+	monitor_func(philo, arg);
+	free_thread(p, arg, shared, philo);
+}
+
+int	create_thread(t_arg arg, pthread_t *p, t_philosopher *philo)
+{
+	int	i;
+
+	i = 0;
 	while (i < arg.number)
 	{
 		if (pthread_create(&(p[i]), NULL, philo_start, &(philo[i])) != 0)
-			return (EXIT);
+			return (0);
 		i++;
 	}
-	monitor_func(philo, arg);
-	free_thread(p, arg, shared, philo);
+	return (1);
 }
 
 void	*philo_start(void *data)
@@ -86,6 +94,7 @@ t_shared *shared, t_philosopher *philo)
 	pthread_mutex_destroy(&(shared->std_out));
 	pthread_mutex_destroy(&(shared->eat_cnt_check));
 	free(shared->fork_mutex);
+	free(shared->fork);
 	free(shared);
 	free(p);
 	free(philo);

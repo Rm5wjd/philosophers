@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:14 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/16 17:45:51 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/22 15:28:56 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ typedef struct s_philosopher
 }	t_philosopher;
 
 //main
+int					create_thread(t_arg arg, pthread_t *p, \
+t_philosopher *philo);
 void				*philo_start(void *data);
 void				monitor_func(t_philosopher *philo, t_arg arg);
 void				free_thread(pthread_t *p, t_arg arg, \
@@ -64,7 +66,6 @@ int					philo_init_arg(t_arg *arg, char *argv[], int argc);
 int					philo_init_shared(t_shared **shared, int number);
 int					philo_init_sopher(t_philosopher *philo, \
 t_arg arg, t_shared *shared);
-size_t				ft_strlen(const char *s);
 
 //print
 void				philo_print(t_philosopher *philo, const char *str);
@@ -83,6 +84,6 @@ void				put_fork(t_philosopher *philo, int first, int second);
 int					ft_atoi(const char *str);
 
 //arg_parse
-int					arg_range_check(t_arg *arg);
+int					arg_range_check(t_arg *arg, int argc);
 
 #endif
