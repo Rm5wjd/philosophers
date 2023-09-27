@@ -6,13 +6,11 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:14:47 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/22 15:30:48 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/27 19:52:42 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-#define EXIT 1
 
 int	main(int argc, char *argv[])
 {
@@ -22,18 +20,18 @@ int	main(int argc, char *argv[])
 	pthread_t		*p;
 
 	if (argc != 5 && argc != 6)
-		return (EXIT);
+		return (EXIT_FAILURE);
 	if (philo_init_arg(&arg, argv, argc) == 0)
-		return (EXIT);
+		return (0);
 	philo = (t_philosopher *)malloc(sizeof(t_philosopher) * (arg.number));
 	p = (pthread_t *)malloc(sizeof(pthread_t) * (arg.number));
 	if (!philo || !p)
-		return (EXIT);
+		return (EXIT_FAILURE);
 	if (philo_init_shared(&shared, arg.number) == 0 \
 	|| philo_init_sopher(philo, arg, shared) == 0)
-		return (EXIT);
+		return (EXIT_FAILURE);
 	if (create_thread(arg, p, philo) == 0)
-		return (EXIT);
+		return (EXIT_FAILURE);
 	monitor_func(philo, arg);
 	free_thread(p, arg, shared, philo);
 }
@@ -57,7 +55,7 @@ void	*philo_start(void *data)
 	t_philosopher	*philo;
 
 	philo = (t_philosopher *)data;
-	if (philo->self % 2 == 0)
+	if ((philo->self + 1) % 2 == 0)
 		usleep(100);
 	while (1)
 	{

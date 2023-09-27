@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:16:30 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/16 17:49:24 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/27 19:49:29 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,22 @@
 #define FAILURE 1
 #define SUCCESS 0
 
-inline static void	set_fork_order(int *first, int *second, \
-t_philosopher *philo);
-
 void	philo_action_eat(t_philosopher *philo)
 {
-	int	first;
-	int	second;
-
-	set_fork_order(&first, &second, philo);
-	while (pick_fork(philo, first) == FAILURE)
-		;
+	while (pick_fork_left(philo, philo->left) == FAILURE)
+		usleep (1);
 	philo_print(philo, "has taken a fork");
 	if (philo->arg.number == 1)
 		return ;
-	while (pick_fork(philo, second) == FAILURE)
-		;
+	while (pick_fork_right(philo, philo->right) == FAILURE)
+		usleep (1);
 	philo_print(philo, "has taken a fork");
 	pthread_mutex_lock(&(philo->last_eat_check));
 	philo->last_eat = get_time();
 	pthread_mutex_unlock(&(philo->last_eat_check));
 	philo_print(philo, "is eating");
-	ft_usleep(philo->arg.eating_time * 1000);
-	put_fork(philo, first, second);
+	ft_usleep(philo->arg.eating_time);
+	put_fork(philo, philo->left, philo->right);
 	(philo->eat_cnt)++;
 	if (philo->eat_cnt == philo->arg.must_eat)
 	{
@@ -50,7 +43,7 @@ void	philo_action_eat(t_philosopher *philo)
 void	philo_action_sleep(t_philosopher *philo)
 {
 	philo_print(philo, "is sleeping");
-	ft_usleep(philo->arg.sleeping_time * 1000);
+	ft_usleep(philo->arg.sleeping_time);
 }
 
 void	philo_action_thinking(t_philosopher *philo)
@@ -59,30 +52,15 @@ void	philo_action_thinking(t_philosopher *philo)
 	usleep(100);
 }
 
-void	ft_usleep(useconds_t time)
+void	ft_usleep(unsigned int time)
 {
 	unsigned long long	into_function;
 
 	into_function = get_time();
 	while (1)
 	{
-		if (into_function + (time / 1000) <= get_time())
+		if (into_function + time <= get_time())
 			break ;
 		usleep(100);
-	}
-}
-
-inline static void	set_fork_order(int *first, int *second, \
-t_philosopher *philo)
-{
-	if ((philo->self + 1) % 2 == 0)
-	{
-		*first = philo->right;
-		*second = philo->left;
-	}
-	else
-	{
-		*first = philo->left;
-		*second = philo->right;
 	}
 }

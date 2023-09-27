@@ -6,17 +6,17 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:55:46 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/22 15:26:51 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/27 19:49:47 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <string.h>
 
 #define CRASH 0
 #define NOTCRASH 1
 
 static int	num_check(const char *str);
+static void	fork_status_init(int *fork, int fork_num);
 
 int	philo_init_arg(t_arg *arg, char *argv[], int argc)
 {
@@ -68,7 +68,7 @@ int	philo_init_shared(t_shared **shared, int number)
 	(*shared)->init_time = get_time();
 	(*shared)->end_flag = 0;
 	(*shared)->done_philo = 0;
-	memset((*shared)->fork, 0, sizeof(int) * number);
+	fork_status_init((*shared)->fork, number);
 	return (NOTCRASH);
 }
 
@@ -112,4 +112,13 @@ static int	num_check(const char *str)
 		i++;
 	}
 	return (1);
+}
+
+static void	fork_status_init(int *fork, int fork_num)
+{
+	int	i;
+
+	i = -1;
+	while (++i < fork_num)
+		fork[i] = i % 2;
 }

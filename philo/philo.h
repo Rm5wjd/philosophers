@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 19:01:14 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/22 15:28:56 by junglee          ###   ########.fr       */
+/*   Updated: 2023/09/27 19:23:12 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,11 @@ void				philo_print_dying(t_philosopher *philo);
 void				philo_action_eat(t_philosopher *philo);
 void				philo_action_sleep(t_philosopher *philo);
 void				philo_action_thinking(t_philosopher *philo);
-void				ft_usleep(useconds_t time);
+void				ft_usleep(unsigned int time);
 
 //pick_fork
-int					pick_fork(t_philosopher *philo, int fork_num);
+int					pick_fork_left(t_philosopher *philo, int fork_num);
+int					pick_fork_right(t_philosopher *philo, int fork_num);
 void				put_fork(t_philosopher *philo, int first, int second);
 //atoi
 int					ft_atoi(const char *str);
