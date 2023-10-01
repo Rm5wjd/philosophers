@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 20:35:31 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/27 19:49:03 by junglee          ###   ########.fr       */
+/*   Updated: 2023/10/01 17:22:02 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	monitor_func(t_philosopher *philo, t_arg arg)
 	while (1)
 	{
 		if (++i >= arg.number)
-			usleep (1);
+			usleep (200);
 		i %= arg.number;
 		now = get_time();
 		pthread_mutex_lock(&(philo[i].last_eat_check));
@@ -49,6 +49,7 @@ static void	dying_for_time(t_philosopher *philo, int i)
 	pthread_mutex_lock(&(philo->shared->end_check));
 	philo[i].shared->end_flag = 1;
 	pthread_mutex_unlock(&(philo->shared->end_check));
+	//usleep(8);
 	philo_print_dying(&(philo[i]));
 	return ;
 }

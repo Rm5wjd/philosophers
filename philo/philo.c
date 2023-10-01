@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:14:47 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/27 19:52:42 by junglee          ###   ########.fr       */
+/*   Updated: 2023/10/01 17:04:33 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ void	*philo_start(void *data)
 	t_philosopher	*philo;
 
 	philo = (t_philosopher *)data;
-	if ((philo->self + 1) % 2 == 0)
-		usleep(100);
+	//if ((philo->self + 1) % 2 == 0)
+	//	usleep(100);
 	while (1)
 	{
 		philo_action_eat(philo);

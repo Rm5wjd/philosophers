@@ -6,7 +6,7 @@
 /*   By: junglee <junglee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 22:16:30 by junglee           #+#    #+#             */
-/*   Updated: 2023/09/27 19:49:29 by junglee          ###   ########.fr       */
+/*   Updated: 2023/10/01 17:22:53 by junglee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,17 @@
 void	philo_action_eat(t_philosopher *philo)
 {
 	while (pick_fork_left(philo, philo->left) == FAILURE)
-		usleep (1);
+		usleep (100);
 	philo_print(philo, "has taken a fork");
 	if (philo->arg.number == 1)
 		return ;
 	while (pick_fork_right(philo, philo->right) == FAILURE)
-		usleep (1);
+		usleep (100);
 	philo_print(philo, "has taken a fork");
 	pthread_mutex_lock(&(philo->last_eat_check));
 	philo->last_eat = get_time();
 	pthread_mutex_unlock(&(philo->last_eat_check));
+	//usleep(200);
 	philo_print(philo, "is eating");
 	ft_usleep(philo->arg.eating_time);
 	put_fork(philo, philo->left, philo->right);
